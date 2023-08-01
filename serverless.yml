@@ -1,0 +1,10 @@
+# Serverless service information
+service: toomio-backend
+frameworkVersion: '3'
+
+# Provider information
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: prod
+  region: us-east-1
