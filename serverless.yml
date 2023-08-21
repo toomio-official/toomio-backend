@@ -8,3 +8,18 @@ provider:
   runtime: nodejs18.x
   stage: prod
   region: us-east-1
+
+# CloudFormation resources
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: users
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH
