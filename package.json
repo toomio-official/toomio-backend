@@ -16,7 +16,7 @@
     "@nx/js": "16.5.3",
     "@nx/linter": "16.5.3",
     "@nx/node": "16.5.3",
-    "@nx/workspace": "16.5.3",
+    "@nx/workspace": "16.7.2",
     "@types/express": "~4.17.13",
     "@types/jest": "^29.4.0",
     "@types/node": "~18.7.1",
