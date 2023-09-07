@@ -30,3 +30,23 @@ jobs:
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin  ${{ secrets.IMAGE_NAME }}
           docker image push ${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition toomio-backend --query taskDefinition > task-definition.json
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: toomio-backend
+          image: ${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-definition.outputs.task-definition }}
+          service: toomio-backend
+          cluster: toomio-backend
+          wait-for-service-stability: true
