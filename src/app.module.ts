@@ -5,7 +5,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JourneysModule } from './journeys/journeys.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('MONOGODB_URL'), JourneysModule],
+  imports: [
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.MONGODB_URI,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
+    }),
+    JourneysModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
