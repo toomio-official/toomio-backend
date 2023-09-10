@@ -1,6 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
+  HttpCode,
+  NotFoundException,
+  Param,
   Post,
   UsePipes,
   ValidationPipe,
@@ -19,5 +23,14 @@ export class JourneysController {
     @Body() journeyCreateDto: JourneyCreateDto,
   ): Promise<Journey> {
     return await this.journeysService.createJourney(journeyCreateDto);
+  }
+
+  @Delete('/:journeyId')
+  @HttpCode(204)
+  async deleteJourney(@Param('journeyId') journeyId: string) {
+    const res = await this.journeysService.deleteJourney(journeyId);
+    if (!res) {
+      throw new NotFoundException(`Journey with id ${journeyId} not found`);
+    }
   }
 }
