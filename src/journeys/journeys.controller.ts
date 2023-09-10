@@ -6,12 +6,14 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { JourneysService } from './journeys.service';
 import { Journey } from './journey.schema';
 import { JourneyCreateDto } from './dto/journeyCreate.dto';
+import { JourneyUpdateDto } from './dto/journeyUpdate.dto';
 
 @Controller('journeys')
 export class JourneysController {
@@ -32,5 +34,15 @@ export class JourneysController {
     if (!res) {
       throw new NotFoundException(`Journey with id ${journeyId} not found`);
     }
+  }
+
+  @Put('/:journeyId')
+  @UsePipes(ValidationPipe)
+  async updateJourney(
+    @Param('journeyId') journeyId: string,
+    @Body() journeyUpdateDto: JourneyUpdateDto,
+  ): Promise<Journey> {
+    journeyUpdateDto._id = journeyId;
+    return await this.journeysService.updateJourney(journeyUpdateDto);
   }
 }

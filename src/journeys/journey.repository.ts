@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Journey, JourneyDocument } from './journey.schema';
 import mongoose, { Model } from 'mongoose';
 import { JourneyCreateDto } from './dto/journeyCreate.dto';
+import { JourneyUpdateDto } from './dto/journeyUpdate.dto';
 
 @Injectable()
 export class JourneyRepository {
@@ -20,5 +21,18 @@ export class JourneyRepository {
 
     const ret = await this.journeyModel.deleteOne({ _id: objId });
     return ret.deletedCount === 1;
+  }
+
+  async updateJourney(JourneyUpdateDto: JourneyUpdateDto): Promise<Journey> {
+    return await this.journeyModel.findByIdAndUpdate(
+      {
+        _id: JourneyUpdateDto._id,
+      },
+      {
+        title: JourneyUpdateDto.title,
+        description: JourneyUpdateDto.description,
+      },
+      { new: true },
+    );
   }
 }
