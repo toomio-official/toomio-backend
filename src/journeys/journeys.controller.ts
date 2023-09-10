@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { JourneysService } from './journeys.service';
 import { Journey } from './journey.schema';
 import { JourneyCreateDto } from './dto/journeyCreate.dto';
@@ -8,6 +14,7 @@ export class JourneysController {
   constructor(private journeysService: JourneysService) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   async createJourney(
     @Body() journeyCreateDto: JourneyCreateDto,
   ): Promise<Journey> {
