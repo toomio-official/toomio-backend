@@ -7,6 +7,7 @@ import {
 } from 'amazon-cognito-identity-js';
 import { AuthLoginUserDto } from './dtos/auth-login-user.dto';
 import { AuthRegisterUserDto } from './dtos/auth-register-user.dto';
+import { AuthChangePasswordUserDto } from './dtos/auth-change-password-user.dto';
 
 @Injectable()
 export class AwsCognitoService {
@@ -65,6 +66,45 @@ export class AwsCognitoService {
             accessToken: result.getAccessToken().getJwtToken(),
             refreshToken: result.getRefreshToken().getToken(),
           });
+        },
+        onFailure: (err) => {
+          reject(err);
+        },
+      });
+    });
+  }
+
+  async changeUserPassword(
+    authChangePasswordUserDto: AuthChangePasswordUserDto,
+  ) {
+    const { email, currentPassword, newPassword } = authChangePasswordUserDto;
+
+    const userData = {
+      Username: email,
+      Pool: this.userPool,
+    };
+
+    const authenticationDetails = new AuthenticationDetails({
+      Username: email,
+      Password: currentPassword,
+    });
+
+    const userCognito = new CognitoUser(userData);
+
+    return new Promise((resolve, reject) => {
+      userCognito.authenticateUser(authenticationDetails, {
+        onSuccess: () => {
+          userCognito.changePassword(
+            currentPassword,
+            newPassword,
+            (err, result) => {
+              if (err) {
+                reject(err);
+                return;
+              }
+              resolve(result);
+            },
+          );
         },
         onFailure: (err) => {
           reject(err);
