@@ -9,6 +9,8 @@ import { AwsCognitoService } from './aws-cognito.service';
 import { AuthLoginUserDto } from './dtos/auth-login-user.dto';
 import { AuthRegisterUserDto } from './dtos/auth-register-user.dto';
 import { AuthChangePasswordUserDto } from './dtos/auth-change-password-user.dto';
+import { AuthConfirmPasswordUserDto } from './dtos/auth-confirm-password-user.dto';
+import { AuthForgotPasswordUserDto } from './dtos/auth-forgot-password-user.dto';
 
 @Controller('/auth')
 export class AuthController {
@@ -31,5 +33,25 @@ export class AuthController {
     @Body() authChangePasswordUserDto: AuthChangePasswordUserDto,
   ) {
     await this.awsCognitoService.changeUserPassword(authChangePasswordUserDto);
+  }
+
+  @Post('/forgot-password')
+  @UsePipes(ValidationPipe)
+  async forgotPassword(
+    @Body() authForgotPasswordUserDto: AuthForgotPasswordUserDto,
+  ) {
+    return await this.awsCognitoService.forgotUserPassword(
+      authForgotPasswordUserDto,
+    );
+  }
+
+  @Post('/confirm-password')
+  @UsePipes(ValidationPipe)
+  async confirmPassword(
+    @Body() authConfirmPasswordUserDto: AuthConfirmPasswordUserDto,
+  ) {
+    return await this.awsCognitoService.confirmUserPassword(
+      authConfirmPasswordUserDto,
+    );
   }
 }
