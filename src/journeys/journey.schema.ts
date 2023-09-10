@@ -5,10 +5,14 @@ export type JourneyDocument = Journey & Document;
 
 @Schema()
 export class Journey {
+  @Prop({ default: Date.now })
+  createdAt: Date;
   @Prop()
-  id: string;
+  title: string;
   @Prop()
-  name: string;
+  description: string;
+  @Prop()
+  userName: string;
 }
 
 export const JourneySchema = SchemaFactory.createForClass(Journey);
