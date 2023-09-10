@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JourneysModule } from './journeys/journeys.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JourneysModule } from './journeys/journeys.module';
       }),
     }),
     JourneysModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
