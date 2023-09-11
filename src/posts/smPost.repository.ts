@@ -12,8 +12,4 @@ export class SMPostRepository {
     const createdSMPost = new this.smPostModel(smPostCreateDto);
     return await createdSMPost.save();
   }
-
-  async getAllPosts(): Promise<SMPost[]> {
-    return await this.smPostModel.find().populate('journeyId');
-  }
 }
