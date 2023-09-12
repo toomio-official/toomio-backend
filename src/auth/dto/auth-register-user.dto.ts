@@ -1,9 +1,6 @@
-import { IsEmail, IsString, Matches } from 'class-validator';
+import { IsDate, IsEmail, IsString, Matches } from 'class-validator';
 
 export class AuthRegisterUserDto {
-  @IsString()
-  name: string;
-
   @IsEmail()
   email: string;
 
@@ -14,4 +11,19 @@ export class AuthRegisterUserDto {
     { message: 'invalid password' },
   )
   password: string;
+
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
+
+  @IsString()
+  profilePicture: string;
+
+  @IsString()
+  gender: string;
+
+  @IsDate()
+  birthDate: string;
 }

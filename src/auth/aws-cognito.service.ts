@@ -35,7 +35,15 @@ export class AwsCognitoService {
   }
 
   async registerUser(authRegisterUserDto: AuthRegisterUserDto) {
-    const { name, email, password } = authRegisterUserDto;
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      profilePicture,
+      gender,
+      birthDate,
+    } = authRegisterUserDto;
 
     return new Promise((resolve, reject) => {
       this.userPool.signUp(
@@ -43,8 +51,24 @@ export class AwsCognitoService {
         password,
         [
           new CognitoUserAttribute({
-            Name: 'name',
-            Value: name,
+            Name: 'given_name',
+            Value: firstName,
+          }),
+          new CognitoUserAttribute({
+            Name: 'family_name',
+            Value: lastName,
+          }),
+          new CognitoUserAttribute({
+            Name: 'picture',
+            Value: profilePicture,
+          }),
+          new CognitoUserAttribute({
+            Name: 'gender',
+            Value: gender,
+          }),
+          new CognitoUserAttribute({
+            Name: 'birthdate',
+            Value: birthDate,
           }),
         ],
         null,
