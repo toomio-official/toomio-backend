@@ -15,4 +15,9 @@ export class SMPostsService {
   async updateSmPost(smPostUpdateDto: SMPostUpdateDto): Promise<SMPost> {
     return await this.smPostRepository.updateSmPost(smPostUpdateDto);
   }
+
+  async deleteSmPost(smPostId: string): Promise<boolean> {
+    const x = await this.smPostRepository.deleteSmPost(smPostId);
+    return x;
+  }
 }

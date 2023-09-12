@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { SMPost } from './smPost.schema';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 
@@ -20,5 +20,11 @@ export class SMPostRepository {
       smPostUpdateDto,
       { new: true },
     );
+  }
+
+  async deleteSmPost(smPostId: string): Promise<boolean> {
+    const objId = new mongoose.Types.ObjectId(smPostId);
+    const ret = await this.smPostModel.deleteOne({ _id: objId });
+    return ret.deletedCount === 1;
   }
 }

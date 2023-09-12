@@ -1,6 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
+  HttpCode,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -30,5 +33,14 @@ export class SMPostsController {
   ): Promise<SMPost> {
     smPostUpdateDto._id = smPostId;
     return await this.smPostService.updateSmPost(smPostUpdateDto);
+  }
+
+  @Delete('/:smPostId')
+  @HttpCode(204)
+  async deleteJourney(@Param('smPostId') smPostId: string) {
+    const res = await this.smPostService.deleteSmPost(smPostId);
+    if (!res) {
+      throw new NotFoundException(`Post with id ${smPostId} not found`);
+    }
   }
 }
