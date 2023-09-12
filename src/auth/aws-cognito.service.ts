@@ -8,6 +8,7 @@ import {
 import {
   CognitoIdentityProviderClient,
   AdminGetUserCommand,
+  AdminDeleteUserCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { AuthLoginUserDto } from './dtos/auth-login-user.dto';
 import { AuthRegisterUserDto } from './dtos/auth-register-user.dto';
@@ -15,6 +16,7 @@ import { AuthChangePasswordUserDto } from './dtos/auth-change-password-user.dto'
 import { AuthConfirmPasswordUserDto } from './dtos/auth-confirm-password-user.dto';
 import { AuthForgotPasswordUserDto } from './dtos/auth-forgot-password-user.dto';
 import { AuthGetUserDto } from './dtos/auth-get-user.dto';
+import { AuthDeleteUserDto } from './dtos/auth-delete-user.dto';
 
 @Injectable()
 export class AwsCognitoService {
@@ -177,6 +179,17 @@ export class AwsCognitoService {
     const { email } = authGetUserDto;
 
     const command = new AdminGetUserCommand({
+      UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
+      Username: email,
+    });
+
+    return this.cognitoClient.send(command);
+  }
+
+  async deleteUser(authDeleteUserDto: AuthDeleteUserDto) {
+    const { email } = authDeleteUserDto;
+
+    const command = new AdminDeleteUserCommand({
       UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
       Username: email,
     });

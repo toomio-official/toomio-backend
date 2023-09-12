@@ -12,6 +12,7 @@ import { AuthChangePasswordUserDto } from './dtos/auth-change-password-user.dto'
 import { AuthConfirmPasswordUserDto } from './dtos/auth-confirm-password-user.dto';
 import { AuthForgotPasswordUserDto } from './dtos/auth-forgot-password-user.dto';
 import { AuthGetUserDto } from './dtos/auth-get-user.dto';
+import { AuthDeleteUserDto } from './dtos/auth-delete-user.dto';
 
 @Controller('/auth')
 export class AuthController {
@@ -60,5 +61,11 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   async getUser(@Body() authGetUserDto: AuthGetUserDto) {
     return await this.awsCognitoService.getUser(authGetUserDto);
+  }
+
+  @Post('/delete-user')
+  @UsePipes(ValidationPipe)
+  async deleteUser(@Body() authDeleteUserDto: AuthDeleteUserDto) {
+    return await this.awsCognitoService.deleteUser(authDeleteUserDto);
   }
 }
