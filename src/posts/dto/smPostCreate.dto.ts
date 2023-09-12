@@ -7,5 +7,5 @@ export class SMPostCreateDto {
   @IsNotEmpty()
   userName: string;
   @IsNotEmpty()
-  journeyId: string;
+  journey: string;
 }

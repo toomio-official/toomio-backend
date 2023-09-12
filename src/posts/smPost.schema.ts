@@ -15,7 +15,7 @@ export class SMPost {
   @Prop()
   userName: string;
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Journey' })
-  journeyId: Journey;
+  journey: Journey;
 }
 
 export const SMPostSchema = SchemaFactory.createForClass(SMPost);
