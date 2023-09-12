@@ -5,20 +5,30 @@ import {
   CognitoUserAttribute,
   CognitoUserPool,
 } from 'amazon-cognito-identity-js';
+import {
+  CognitoIdentityProviderClient,
+  AdminGetUserCommand,
+} from '@aws-sdk/client-cognito-identity-provider';
 import { AuthLoginUserDto } from './dtos/auth-login-user.dto';
 import { AuthRegisterUserDto } from './dtos/auth-register-user.dto';
 import { AuthChangePasswordUserDto } from './dtos/auth-change-password-user.dto';
 import { AuthConfirmPasswordUserDto } from './dtos/auth-confirm-password-user.dto';
 import { AuthForgotPasswordUserDto } from './dtos/auth-forgot-password-user.dto';
+import { AuthGetUserDto } from './dtos/auth-get-user.dto';
 
 @Injectable()
 export class AwsCognitoService {
   private userPool: CognitoUserPool;
+  private cognitoClient: CognitoIdentityProviderClient;
 
   constructor() {
     this.userPool = new CognitoUserPool({
       UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
       ClientId: process.env.AWS_COGNITO_CLIENT_ID,
+    });
+
+    this.cognitoClient = new CognitoIdentityProviderClient({
+      region: process.env.AWS_REGION,
     });
   }
 
@@ -161,5 +171,16 @@ export class AwsCognitoService {
         },
       });
     });
+  }
+
+  async getUser(authGetUserDto: AuthGetUserDto) {
+    const { email } = authGetUserDto;
+
+    const command = new AdminGetUserCommand({
+      UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
+      Username: email,
+    });
+
+    return this.cognitoClient.send(command);
   }
 }
