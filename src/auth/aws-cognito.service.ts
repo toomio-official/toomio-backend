@@ -10,13 +10,13 @@ import {
   AdminGetUserCommand,
   AdminDeleteUserCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { AuthLoginUserDto } from './dtos/auth-login-user.dto';
-import { AuthRegisterUserDto } from './dtos/auth-register-user.dto';
-import { AuthChangePasswordUserDto } from './dtos/auth-change-password-user.dto';
-import { AuthConfirmPasswordUserDto } from './dtos/auth-confirm-password-user.dto';
-import { AuthForgotPasswordUserDto } from './dtos/auth-forgot-password-user.dto';
-import { AuthGetUserDto } from './dtos/auth-get-user.dto';
-import { AuthDeleteUserDto } from './dtos/auth-delete-user.dto';
+import { AuthLoginUserDto } from './dto/auth-login-user.dto';
+import { AuthRegisterUserDto } from './dto/auth-register-user.dto';
+import { AuthChangePasswordUserDto } from './dto/auth-change-password-user.dto';
+import { AuthConfirmPasswordUserDto } from './dto/auth-confirm-password-user.dto';
+import { AuthForgotPasswordUserDto } from './dto/auth-forgot-password-user.dto';
+import { AuthGetUserDto } from './dto/auth-get-user.dto';
+import { AuthDeleteUserDto } from './dto/auth-delete-user.dto';
 
 @Injectable()
 export class AwsCognitoService {
