@@ -9,6 +9,7 @@ import {
   CognitoIdentityProviderClient,
   AdminGetUserCommand,
   AdminDeleteUserCommand,
+  ListUsersCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { AuthLoginUserDto } from './dto/auth-login-user.dto';
 import { AuthRegisterUserDto } from './dto/auth-register-user.dto';
@@ -205,6 +206,23 @@ export class AwsCognitoService {
     const command = new AdminGetUserCommand({
       UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
       Username: email,
+    });
+
+    return this.cognitoClient.send(command);
+  }
+
+  async listUsers() {
+    const command = new ListUsersCommand({
+      UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
+    });
+
+    return this.cognitoClient.send(command);
+  }
+
+  async searchUsers(search: string) {
+    const command = new ListUsersCommand({
+      UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
+      Filter: `given_name ^= "${search}" OR family_name ^= "${search}"`,
     });
 
     return this.cognitoClient.send(command);

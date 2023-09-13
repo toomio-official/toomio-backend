@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -61,6 +63,15 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   async getUser(@Body() authGetUserDto: AuthGetUserDto) {
     return await this.awsCognitoService.getUser(authGetUserDto);
+  }
+
+  @Get('/search-users')
+  async search(@Query() name: string) {
+    if (Object.keys(name).length) {
+      return this.awsCognitoService.searchUsers(name);
+    } else {
+      return this.awsCognitoService.listUsers();
+    }
   }
 
   @Post('/delete-user')
