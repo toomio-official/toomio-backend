@@ -219,10 +219,10 @@ export class AwsCognitoService {
     return this.cognitoClient.send(command);
   }
 
-  async searchUsers(search: string) {
+  async searchUsers(name: string) {
     const command = new ListUsersCommand({
       UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
-      Filter: `given_name ^= "${search}" OR family_name ^= "${search}"`,
+      Filter: `given_name ^= "${name}" OR family_name ^= "${name}"`,
     });
 
     return this.cognitoClient.send(command);
