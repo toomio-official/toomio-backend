@@ -13,7 +13,7 @@ export class SMPost {
   @Prop()
   content: string;
   @Prop()
-  userName: string;
+  userEmail: string;
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Journey' })
   journey: Journey;
 }

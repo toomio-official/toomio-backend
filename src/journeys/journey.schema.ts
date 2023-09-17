@@ -12,7 +12,7 @@ export class Journey {
   @Prop()
   description: string;
   @Prop()
-  userName: string;
+  userEmail: string;
 }
 
 export const JourneySchema = SchemaFactory.createForClass(Journey);
