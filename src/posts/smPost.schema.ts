@@ -14,6 +14,8 @@ export class SMPost {
   content: string;
   @Prop()
   userEmail: string;
+  @Prop()
+  likedUserEmails: string[];
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Journey' })
   journey: Journey;
 }
