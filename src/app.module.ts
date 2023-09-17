@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { JourneysModule } from './journeys/journeys.module';
 import { AuthModule } from './auth/auth.module';
+import { JourneysModule } from './journeys/journeys.module';
+import { SMPostsModule } from './posts/smPosts.module';
+
 
 @Module({
   imports: [
@@ -14,8 +16,9 @@ import { AuthModule } from './auth/auth.module';
         useUnifiedTopology: true,
       }),
     }),
-    JourneysModule,
     AuthModule,
+    JourneysModule,
+    SMPostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
