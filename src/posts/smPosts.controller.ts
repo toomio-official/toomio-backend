@@ -27,7 +27,7 @@ export class SMPostsController {
 
   @Put('/:smPostId')
   @UsePipes(ValidationPipe)
-  async updateJourney(
+  async updatePost(
     @Param('smPostId') smPostId: string,
     @Body() smPostUpdateDto: SMPostUpdateDto,
   ): Promise<SMPost> {
@@ -37,7 +37,7 @@ export class SMPostsController {
 
   @Delete('/:smPostId')
   @HttpCode(204)
-  async deleteJourney(@Param('smPostId') smPostId: string) {
+  async deletePost(@Param('smPostId') smPostId: string) {
     const res = await this.smPostService.deleteSmPost(smPostId);
     if (!res) {
       throw new NotFoundException(`Post with id ${smPostId} not found`);
