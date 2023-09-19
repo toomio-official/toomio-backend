@@ -4,10 +4,14 @@ import { SMPostsService } from './smPosts.service';
 import { SMPostRepository } from './smPost.repository';
 import { SMPost, SMPostSchema } from './smPost.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Like, LikeSchema } from 'src/likes/like.schema';
+import { User, UserSchema } from 'src/users/user.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: SMPost.name, schema: SMPostSchema }]),
+    MongooseModule.forFeature([{ name: Like.name, schema: LikeSchema }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [SMPostsController],
   providers: [SMPostsService, SMPostRepository],

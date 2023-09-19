@@ -3,6 +3,7 @@ import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPost } from './smPost.schema';
 import { SMPostRepository } from './smPost.repository';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
+import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
 
 @Injectable()
 export class SMPostsService {
@@ -19,5 +20,9 @@ export class SMPostsService {
   async deleteSmPost(smPostId: string): Promise<boolean> {
     const x = await this.smPostRepository.deleteSmPost(smPostId);
     return x;
+  }
+
+  async likeAPost(likeSmPostDto: LikeSmPostDto): Promise<SMPost> {
+    return await this.smPostRepository.likeAPost(likeSmPostDto);
   }
 }

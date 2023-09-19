@@ -14,6 +14,7 @@ import { SMPostsService } from './smPosts.service';
 import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPost } from './smPost.schema';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
+import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
 
 @Controller('posts')
 export class SMPostsController {
@@ -25,7 +26,7 @@ export class SMPostsController {
     return await this.smPostService.createSMPost(smPostCreateDto);
   }
 
-  @Put('/:smPostId')
+  @Put('/edit/:smPostId')
   @UsePipes(ValidationPipe)
   async updatePost(
     @Param('smPostId') smPostId: string,
@@ -42,5 +43,10 @@ export class SMPostsController {
     if (!res) {
       throw new NotFoundException(`Post with id ${smPostId} not found`);
     }
+  }
+
+  @Put('/likepost')
+  async likePost(@Body() likeSmPostDto: LikeSmPostDto): Promise<SMPost> {
+    return await this.smPostService.likeAPost(likeSmPostDto);
   }
 }
