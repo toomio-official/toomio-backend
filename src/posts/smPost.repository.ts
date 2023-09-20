@@ -39,44 +39,48 @@ export class SMPostRepository {
     return ret.deletedCount === 1;
   }
 
+  async findById(smPostId: string): Promise<SMPost> {
+    const objId = new mongoose.Types.ObjectId(smPostId);
+    return await this.smPostModel.findById(objId);
+  }
+
   async likeAPost(likeSmPostDto: LikeSmPostDto): Promise<SMPost> {
-    // Check if the post exists
-    const post = await this.smPostModel.findById(likeSmPostDto.smPostId);
+    const post = await this.findById(likeSmPostDto.smPostId);
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
-    // Check if the user has already liked the post
-    const existingLike = await this.likeSmPostModel.findOne({
+    //find if user already exists
+    let user = await this.userModel.findOne({
       userEmail: likeSmPostDto.userEmail,
-      // smPost: likeSmPostDto.smPostId,
     });
 
+    //if user doesn't exist, create a new user
+    if (!user) {  
+      user = await new this.userModel({
+      userEmail: likeSmPostDto.userEmail,
+    }).save();
+    }
+
+    // Check if the user has already liked the post
+    const existingLike = await this.likeSmPostModel.findOne({
+      user: user._id,
+      smPost: likeSmPostDto.smPostId,
+    });
     if (existingLike) {
-      //throw a not acceptable saying user has already liked
       throw new NotAcceptableException('User has already liked this post');
     }
 
-    // If the user hasn't liked the post, create a new like
-    //create a user and save to db
-    const user = new this.userModel({
-      email: likeSmPostDto.userEmail,
-    });
-    const dbuser = await user.save();
-    const newLike = new this.likeSmPostModel({
-      user: dbuser._id,
+    //Create a new like
+    const newLike = await new this.likeSmPostModel({
+      user: user._id,
       smPost: likeSmPostDto.smPostId,
-    });
-    const dblike = await newLike.save();
-
-    // const like = new this.likeSmPostModel(likeSmPostDto);
+    }).save();
 
     // Add the like to the post's likes array
-    // post.likes.push(dblike);
-    // return await post.save();
     return await this.smPostModel.findByIdAndUpdate(
       { _id: likeSmPostDto.smPostId },
-      { $push: { likes: dblike._id } },
+      { $push: { likes: newLike._id } },
     );
   }
 }
