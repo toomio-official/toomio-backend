@@ -56,10 +56,10 @@ export class SMPostRepository {
     });
 
     //if user doesn't exist, create a new user
-    if (!user) {  
+    if (!user) {
       user = await new this.userModel({
-      userEmail: likeSmPostDto.userEmail,
-    }).save();
+        userEmail: likeSmPostDto.userEmail,
+      }).save();
     }
 
     // Check if the user has already liked the post
