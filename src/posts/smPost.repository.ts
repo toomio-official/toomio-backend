@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { SMPost } from './smPost.schema';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, ObjectId } from 'mongoose';
 import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
@@ -44,6 +44,16 @@ export class SMPostRepository {
     return await this.smPostModel.findById(objId);
   }
 
+  async addALikeToAPost(
+    smPostId: string,
+    likeId: mongoose.Types.ObjectId,
+  ): Promise<SMPost> {
+    return await this.smPostModel.findByIdAndUpdate(
+      { _id: smPostId },
+      { $push: { likes: likeId } },
+    );
+  }
+
   async likeAPost(likeSmPostDto: LikeSmPostDto): Promise<SMPost> {
     const post = await this.findById(likeSmPostDto.smPostId);
     if (!post) {
@@ -78,9 +88,10 @@ export class SMPostRepository {
     }).save();
 
     // Add the like to the post's likes array
-    return await this.smPostModel.findByIdAndUpdate(
-      { _id: likeSmPostDto.smPostId },
-      { $push: { likes: newLike._id } },
-    );
+    // return await this.smPostModel.findByIdAndUpdate(
+    //   { _id: likeSmPostDto.smPostId },
+    //   { $push: { likes: newLike._id } },
+    // );
+    return await this.addALikeToAPost(likeSmPostDto.smPostId, newLike._id);
   }
 }
