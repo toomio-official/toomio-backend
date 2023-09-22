@@ -65,9 +65,11 @@ export class SMPostRepository {
     }
 
     //find if user already exists
-    let user: User = await this.userModel.findOne({
-      userEmail: likeSmPostDto.userEmail,
-    });
+    // let user: User = await this.userModel.findOne({
+    //   userEmail: likeSmPostDto.userEmail,
+    // });
+
+    let user: User = await this.userService.findAUser(likeSmPostDto.userEmail);
 
     //if user doesn't exist, create a new user
     // if (!user) {

@@ -13,4 +13,10 @@ export class UserRepository {
       userEmail: userEmail,
     }).save();
   }
+
+  async findAUser(userEmail: string): Promise<User> {
+    return await this.userModel.findOne({
+      userEmail: userEmail,
+    });
+  }
 }
