@@ -75,10 +75,18 @@ export class SMPostRepository {
     }
 
     // Check if the user has already liked the post
-    const existingLike = await this.likeSmPostModel.findOne({
-      user: user._id,
-      smPost: likeSmPostDto.smPostId,
-    });
+    // const existingLike = await this.likeSmPostModel.findOne({
+    //   user: user._id,
+    //   smPost: likeSmPostDto.smPostId,
+    // });
+    // if (existingLike) {
+    //   throw new NotAcceptableException('User has already liked this post');
+    // }
+
+    const existingLike = await this.likeService.findALike(
+      user._id,
+      likeSmPostDto.smPostId,
+    );
     if (existingLike) {
       throw new NotAcceptableException('User has already liked this post');
     }

@@ -13,4 +13,11 @@ export class LikesService {
   ): Promise<Like> {
     return await this.likeRepository.createLike(userId, smPostId);
   }
+
+  async findALike(
+    userId: mongoose.Types.ObjectId,
+    smPostId: string,
+  ): Promise<Like> {
+    return await this.likeRepository.findALike(userId, smPostId);
+  }
 }

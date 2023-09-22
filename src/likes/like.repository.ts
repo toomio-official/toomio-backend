@@ -17,4 +17,14 @@ export class LikeRepository {
       smPost: smPostId,
     }).save();
   }
+
+  async findALike(
+    userId: mongoose.Types.ObjectId,
+    smPostId: string,
+  ): Promise<Like> {
+    return await this.likeModel.findOne({
+      user: userId,
+      smPost: smPostId,
+    });
+  }
 }
