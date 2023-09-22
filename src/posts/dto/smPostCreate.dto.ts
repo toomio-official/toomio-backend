@@ -1,11 +1,12 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class SMPostCreateDto {
   @IsNotEmpty()
   title: string;
   content: string;
   @IsNotEmpty()
-  userName: string;
+  @IsEmail()
+  userEmail: string;
   @IsNotEmpty()
   journey: string;
 }

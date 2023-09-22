@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { Journey } from 'src/journeys/journey.schema';
+import { Like } from 'src/likes/like.schema';
 
 export type SMPostDocument = SMPost & Document;
 
@@ -13,7 +14,9 @@ export class SMPost {
   @Prop()
   content: string;
   @Prop()
-  userName: string;
+  userEmail: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Like' })
+  likes: Like[];
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Journey' })
   journey: Journey;
 }

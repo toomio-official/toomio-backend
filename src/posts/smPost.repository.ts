@@ -4,10 +4,16 @@ import { SMPost } from './smPost.schema';
 import mongoose, { Model } from 'mongoose';
 import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
+import { Like } from 'src/likes/like.schema';
+import { User } from 'src/users/user.schema';
 
 @Injectable()
 export class SMPostRepository {
-  constructor(@InjectModel(SMPost.name) private smPostModel: Model<SMPost>) {}
+  constructor(
+    @InjectModel(SMPost.name) private smPostModel: Model<SMPost>,
+    @InjectModel(Like.name) private likeSmPostModel: Model<Like>,
+    @InjectModel(User.name) private userModel: Model<User>,
+  ) {}
 
   async createSMPost(smPostCreateDto: SMPostCreateDto): Promise<SMPost> {
     const createdSMPost = new this.smPostModel(smPostCreateDto);
@@ -26,5 +32,27 @@ export class SMPostRepository {
     const objId = new mongoose.Types.ObjectId(smPostId);
     const ret = await this.smPostModel.deleteOne({ _id: objId });
     return ret.deletedCount === 1;
+  }
+
+  async findById(smPostId: string): Promise<SMPost> {
+    const objId = new mongoose.Types.ObjectId(smPostId);
+    return await this.smPostModel.findById(objId);
+  }
+
+  async addALikeToAPost(
+    smPostId: string,
+    likeId: mongoose.Types.ObjectId,
+  ): Promise<SMPost> {
+    return await this.smPostModel.findByIdAndUpdate(
+      { _id: smPostId },
+      { $push: { likes: likeId } },
+    );
+  }
+
+  async likeAPost(
+    smPostId: string,
+    newLikeId: mongoose.Types.ObjectId,
+  ): Promise<SMPost> {
+    return await this.addALikeToAPost(smPostId, newLikeId);
   }
 }
