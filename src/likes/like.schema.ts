@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 import { SMPost } from 'src/posts/smPost.schema';
 import { User } from 'src/users/user.schema';
 
