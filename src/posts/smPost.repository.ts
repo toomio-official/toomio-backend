@@ -5,12 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { SMPost } from './smPost.schema';
-import mongoose, { Model, ObjectId } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
 import { Like } from 'src/likes/like.schema';
 import { User } from 'src/users/user.schema';
+import { LikesService } from 'src/likes/likes.service';
 
 @Injectable()
 export class SMPostRepository {
@@ -18,6 +19,7 @@ export class SMPostRepository {
     @InjectModel(SMPost.name) private smPostModel: Model<SMPost>,
     @InjectModel(Like.name) private likeSmPostModel: Model<Like>,
     @InjectModel(User.name) private userModel: Model<User>,
+    private likeService: LikesService,
   ) {}
 
   async createSMPost(smPostCreateDto: SMPostCreateDto): Promise<SMPost> {
@@ -82,10 +84,15 @@ export class SMPostRepository {
     }
 
     //Create a new like
-    const newLike = await new this.likeSmPostModel({
-      user: user._id,
-      smPost: likeSmPostDto.smPostId,
-    }).save();
+    // const newLike = await new this.likeSmPostModel({
+    //   user: user._id,
+    //   smPost: likeSmPostDto.smPostId,
+    // }).save();
+
+    const newLike = await this.likeService.createLike(
+      user._id,
+      likeSmPostDto.smPostId,
+    );
 
     // Add the like to the post's likes array
     // return await this.smPostModel.findByIdAndUpdate(
