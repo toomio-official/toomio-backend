@@ -8,6 +8,8 @@ import { Like, LikeSchema } from 'src/likes/like.schema';
 import { User, UserSchema } from 'src/users/user.schema';
 import { LikesService } from 'src/likes/likes.service';
 import { LikeRepository } from 'src/likes/like.repository';
+import { UsersService } from 'src/users/users.service';
+import { UserRepository } from 'src/users/user.repository';
 
 @Module({
   imports: [
@@ -16,6 +18,13 @@ import { LikeRepository } from 'src/likes/like.repository';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [SMPostsController],
-  providers: [SMPostsService, SMPostRepository, LikesService, LikeRepository],
+  providers: [
+    SMPostsService,
+    SMPostRepository,
+    LikesService,
+    LikeRepository,
+    UsersService,
+    UserRepository,
+  ],
 })
 export class SMPostsModule {}

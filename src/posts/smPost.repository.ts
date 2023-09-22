@@ -12,6 +12,7 @@ import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
 import { Like } from 'src/likes/like.schema';
 import { User } from 'src/users/user.schema';
 import { LikesService } from 'src/likes/likes.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class SMPostRepository {
@@ -20,6 +21,7 @@ export class SMPostRepository {
     @InjectModel(Like.name) private likeSmPostModel: Model<Like>,
     @InjectModel(User.name) private userModel: Model<User>,
     private likeService: LikesService,
+    private userService: UsersService,
   ) {}
 
   async createSMPost(smPostCreateDto: SMPostCreateDto): Promise<SMPost> {
@@ -63,15 +65,19 @@ export class SMPostRepository {
     }
 
     //find if user already exists
-    let user = await this.userModel.findOne({
+    let user: User = await this.userModel.findOne({
       userEmail: likeSmPostDto.userEmail,
     });
 
     //if user doesn't exist, create a new user
+    // if (!user) {
+    //   user = await new this.userModel({
+    //     userEmail: likeSmPostDto.userEmail,
+    //   }).save();
+    // }
+
     if (!user) {
-      user = await new this.userModel({
-        userEmail: likeSmPostDto.userEmail,
-      }).save();
+      user = await this.userService.createUser(likeSmPostDto.userEmail);
     }
 
     // Check if the user has already liked the post
