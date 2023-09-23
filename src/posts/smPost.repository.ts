@@ -55,4 +55,21 @@ export class SMPostRepository {
   ): Promise<SMPost> {
     return await this.addALikeToAPost(smPostId, newLikeId);
   }
+
+  async addACommentToAPost(
+    smPostId: string,
+    commentId: mongoose.Types.ObjectId,
+  ): Promise<SMPost> {
+    return await this.smPostModel.findByIdAndUpdate(
+      { _id: smPostId },
+      { $push: { comments: commentId } },
+    );
+  }
+
+  async commentAPost(
+    smPostId: string,
+    newCommentId: mongoose.Types.ObjectId,
+  ): Promise<SMPost> {
+    return await this.addACommentToAPost(smPostId, newCommentId);
+  }
 }

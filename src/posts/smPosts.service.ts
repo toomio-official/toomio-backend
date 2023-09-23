@@ -11,6 +11,8 @@ import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
 import { LikesService } from 'src/likes/likes.service';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/user.schema';
+import { CommentSmPostDto } from 'src/comments/commentSmPost.dto';
+import { CommentsService } from 'src/comments/comments.service';
 
 @Injectable()
 export class SMPostsService {
@@ -18,6 +20,7 @@ export class SMPostsService {
     private smPostRepository: SMPostRepository,
     private likeService: LikesService,
     private userService: UsersService,
+    private commentService: CommentsService,
   ) {}
 
   async createSMPost(smPostCreateDto: SMPostCreateDto): Promise<SMPost> {
@@ -61,6 +64,42 @@ export class SMPostsService {
     return await this.smPostRepository.likeAPost(
       likeSmPostDto.smPostId,
       newLike._id,
+    );
+  }
+
+  async commentAPost(commentSmPostDto: CommentSmPostDto): Promise<SMPost> {
+    const post = await this.smPostRepository.findById(
+      commentSmPostDto.smPostId,
+    );
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    let user: User = await this.userService.findAUser(
+      commentSmPostDto.userEmail,
+    );
+
+    if (!user) {
+      user = await this.userService.createUser(commentSmPostDto.userEmail);
+    }
+
+    const existingComment = await this.commentService.findAComment(
+      user._id,
+      commentSmPostDto.smPostId,
+    );
+    if (existingComment) {
+      throw new NotAcceptableException('User has already commented this post');
+    }
+
+    const newComment = await this.commentService.createComment(
+      user._id,
+      commentSmPostDto.smPostId,
+      commentSmPostDto.content,
+    );
+
+    return await this.smPostRepository.commentAPost(
+      commentSmPostDto.smPostId,
+      newComment._id,
     );
   }
 }

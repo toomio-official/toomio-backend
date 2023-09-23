@@ -15,6 +15,7 @@ import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPost } from './smPost.schema';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
+import { CommentSmPostDto } from 'src/comments/commentSmPost.dto';
 
 @Controller('posts')
 export class SMPostsController {
@@ -48,5 +49,12 @@ export class SMPostsController {
   @Put('/likepost')
   async likePost(@Body() likeSmPostDto: LikeSmPostDto): Promise<SMPost> {
     return await this.smPostService.likeAPost(likeSmPostDto);
+  }
+
+  @Put('/commentpost')
+  async commentPost(
+    @Body() commentSmPostDto: CommentSmPostDto,
+  ): Promise<SMPost> {
+    return await this.smPostService.commentAPost(commentSmPostDto);
   }
 }
