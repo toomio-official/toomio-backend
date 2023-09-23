@@ -39,6 +39,13 @@ export class SMPostRepository {
     return await this.smPostModel.findById(objId);
   }
 
+  async likeAPost(
+    smPostId: string,
+    newLikeId: mongoose.Types.ObjectId,
+  ): Promise<SMPost> {
+    return await this.addALikeToAPost(smPostId, newLikeId);
+  }
+
   async addALikeToAPost(
     smPostId: string,
     likeId: mongoose.Types.ObjectId,
@@ -49,11 +56,11 @@ export class SMPostRepository {
     );
   }
 
-  async likeAPost(
+  async commentAPost(
     smPostId: string,
-    newLikeId: mongoose.Types.ObjectId,
+    newCommentId: mongoose.Types.ObjectId,
   ): Promise<SMPost> {
-    return await this.addALikeToAPost(smPostId, newLikeId);
+    return await this.addACommentToAPost(smPostId, newCommentId);
   }
 
   async addACommentToAPost(
@@ -64,12 +71,5 @@ export class SMPostRepository {
       { _id: smPostId },
       { $push: { comments: commentId } },
     );
-  }
-
-  async commentAPost(
-    smPostId: string,
-    newCommentId: mongoose.Types.ObjectId,
-  ): Promise<SMPost> {
-    return await this.addACommentToAPost(smPostId, newCommentId);
   }
 }
