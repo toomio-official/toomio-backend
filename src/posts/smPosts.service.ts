@@ -83,14 +83,6 @@ export class SMPostsService {
       user = await this.userService.createUser(commentSmPostDto.userEmail);
     }
 
-    const existingComment = await this.commentService.findAComment(
-      user._id,
-      commentSmPostDto.smPostId,
-    );
-    if (existingComment) {
-      throw new NotAcceptableException('User has already commented this post');
-    }
-
     const newComment = await this.commentService.createComment(
       user._id,
       commentSmPostDto.smPostId,
