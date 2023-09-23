@@ -7,7 +7,7 @@ import { JourneysModule } from './journeys/journeys.module';
 import { SMPostsModule } from './posts/smPosts.module';
 import { LikesModule } from './likes/likes.module';
 import { UsersModule } from './users/users.module';
-
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -23,6 +23,7 @@ import { UsersModule } from './users/users.module';
     SMPostsModule,
     LikesModule,
     UsersModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
