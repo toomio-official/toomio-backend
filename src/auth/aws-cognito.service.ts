@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -18,13 +18,16 @@ import { AuthConfirmPasswordUserDto } from './dto/auth-confirm-password-user.dto
 import { AuthForgotPasswordUserDto } from './dto/auth-forgot-password-user.dto';
 import { AuthGetUserDto } from './dto/auth-get-user.dto';
 import { AuthDeleteUserDto } from './dto/auth-delete-user.dto';
+import { UserRepository } from './users/user.repository';
+import { UserCreateDto } from './users/dto/userCreate.dto';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class AwsCognitoService {
   private userPool: CognitoUserPool;
   private cognitoClient: CognitoIdentityProviderClient;
 
-  constructor() {
+  constructor(private userRepository: UserRepository) {
     this.userPool = new CognitoUserPool({
       UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
       ClientId: process.env.AWS_COGNITO_CLIENT_ID,
@@ -45,6 +48,21 @@ export class AwsCognitoService {
       gender,
       birthDate,
     } = authRegisterUserDto;
+
+    const user = await this.userRepository.findAUser(email);
+    if (user) {
+
+      throw NotAcceptableException;
+    }
+    const userCreateDto = new UserCreateDto();
+    userCreateDto._id = new mongoose.Types.ObjectId();
+    userCreateDto.email = email;
+    userCreateDto.firstName = firstName;
+    userCreateDto.lastName = lastName;
+    userCreateDto.profilePicture = profilePicture;
+    userCreateDto.gender = gender;
+    userCreateDto.birthDate = birthDate;
+    await this.userRepository.createUser(userCreateDto);
 
     return new Promise((resolve, reject) => {
       this.userPool.signUp(

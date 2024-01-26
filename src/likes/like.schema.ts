@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { SMPost } from 'src/posts/smPost.schema';
-import { User } from 'src/users/user.schema';
+import { User } from 'src/auth/users/user.schema';
 
 export type LikeDocument = Like & Document;
 
