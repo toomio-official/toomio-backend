@@ -9,17 +9,17 @@ import { SMPostRepository } from './smPost.repository';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
 import { LikesService } from 'src/likes/likes.service';
-import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/user.schema';
+import { User } from 'src/auth/users/user.schema';
 import { CommentSmPostDto } from 'src/comments/commentSmPost.dto';
 import { CommentsService } from 'src/comments/comments.service';
+import { UserRepository } from '../auth/users/user.repository';
 
 @Injectable()
 export class SMPostsService {
   constructor(
     private smPostRepository: SMPostRepository,
     private likeService: LikesService,
-    private userService: UsersService,
+    private userRepository: UserRepository,
     private commentService: CommentsService,
   ) {}
 
@@ -42,10 +42,12 @@ export class SMPostsService {
       throw new NotFoundException('Post not found');
     }
 
-    let user: User = await this.userService.findAUser(likeSmPostDto.userEmail);
+    const user: User = await this.userRepository.findAUser(
+      likeSmPostDto.userEmail,
+    );
 
     if (!user) {
-      user = await this.userService.createUser(likeSmPostDto.userEmail);
+      throw new NotFoundException('User Not Found');
     }
 
     const existingLike = await this.likeService.findALike(
@@ -75,12 +77,12 @@ export class SMPostsService {
       throw new NotFoundException('Post not found');
     }
 
-    let user: User = await this.userService.findAUser(
+    let user: User = await this.userRepository.findAUser(
       commentSmPostDto.userEmail,
     );
 
     if (!user) {
-      user = await this.userService.createUser(commentSmPostDto.userEmail);
+      throw new NotFoundException('User Not Found');
     }
 
     const newComment = await this.commentService.createComment(

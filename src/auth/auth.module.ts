@@ -3,10 +3,16 @@ import { PassportModule } from '@nestjs/passport';
 import { AwsCognitoService } from './aws-cognito.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
+import { UserRepository } from './users/user.repository';
+import { MongooseModule } from '@nestjs/mongoose';
+import { User, UserSchema } from './users/user.schema';
 
 @Module({
-  imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
-  providers: [AwsCognitoService, JwtStrategy],
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+  ],
+  providers: [AwsCognitoService, JwtStrategy, UserRepository],
   controllers: [AuthController],
 })
 export class AuthModule {}

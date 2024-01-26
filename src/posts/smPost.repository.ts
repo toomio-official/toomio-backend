@@ -5,7 +5,7 @@ import mongoose, { Model } from 'mongoose';
 import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 import { Like } from 'src/likes/like.schema';
-import { User } from 'src/users/user.schema';
+import { User } from 'src/auth/users/user.schema';
 
 @Injectable()
 export class SMPostRepository {

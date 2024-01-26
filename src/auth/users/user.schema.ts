@@ -9,12 +9,16 @@ export class User {
   _id: mongoose.Types.ObjectId;
   @Prop({ default: Date.now })
   createdAt: Date;
+  @Prop({ unique: true })
+  email: string;
   @Prop()
-  userEmail: string;
+  firstName: string;
   @Prop()
-  userName: string;
+  lastName: string;
   @Prop()
-  avatarLink: string;
+  profilePicture: string;
+  @Prop()
+  birthDate: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

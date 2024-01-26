@@ -5,11 +5,10 @@ import { SMPostRepository } from './smPost.repository';
 import { SMPost, SMPostSchema } from './smPost.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Like, LikeSchema } from 'src/likes/like.schema';
-import { User, UserSchema } from 'src/users/user.schema';
+import { User, UserSchema } from 'src/auth/users/user.schema';
 import { LikesService } from 'src/likes/likes.service';
 import { LikeRepository } from 'src/likes/like.repository';
-import { UsersService } from 'src/users/users.service';
-import { UserRepository } from 'src/users/user.repository';
+import { UserRepository } from 'src/auth/users/user.repository';
 import { CommentsService } from 'src/comments/comments.service';
 import { CommentRepository } from 'src/comments/comment.repository';
 import { Comment, CommentSchema } from 'src/comments/comment.schema';
@@ -27,7 +26,6 @@ import { Comment, CommentSchema } from 'src/comments/comment.schema';
     SMPostRepository,
     LikesService,
     LikeRepository,
-    UsersService,
     UserRepository,
     CommentsService,
     CommentRepository,
