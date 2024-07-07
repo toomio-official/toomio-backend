@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { UserFollowDto } from './dto/userFollow.dto';
 import { User } from './user.schema';
 import { UserRepository } from './user.repository';
@@ -20,6 +20,11 @@ export class UsersService {
         if (!followingUser) {
             throw new NotFoundException('Following User Not Found');
         }
+
+        if (followerUser.following.find(user => user._id.toString() === followingUser._id.toString())) {
+            throw new ConflictException('User Already Followed');
+        }
+        
         followerUser.following.push(followingUser);
         return await this.userRepository.updateUser(followerUser);
     }
