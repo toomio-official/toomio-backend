@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  InternalServerErrorException,
+  NotAcceptableException,
   Post,
   Query,
   UsePipes,
@@ -18,16 +20,19 @@ import { AuthDeleteUserDto } from './dto/auth-delete-user.dto';
 
 @Controller('/auth')
 export class AuthController {
-  constructor(private awsCognitoService: AwsCognitoService) {}
+  constructor(private awsCognitoService: AwsCognitoService) { }
 
   @Post('/register')
   async register(@Body() authRegisterUserDto: AuthRegisterUserDto) {
     try {
       return await this.awsCognitoService.registerUser(authRegisterUserDto);
-    } catch (NotAcceptableException) {
-      throw new NotAcceptableException('User already exists');
+    } catch (e) {
+      if (e.message === 'User with this email already exists') {
+        throw new NotAcceptableException(e.message);
+      } else {
+        throw new InternalServerErrorException();
+      }
     }
-
   }
 
   @Post('/login')

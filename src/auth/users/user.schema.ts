@@ -19,6 +19,8 @@ export class User {
   profilePicture: string;
   @Prop()
   birthDate: string;
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'following' }] })
+  following: User[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -51,8 +51,7 @@ export class AwsCognitoService {
 
     const user = await this.userRepository.findAUser(email);
     if (user) {
-
-      throw NotAcceptableException;
+      throw new Error('User with this email already exists');
     }
     const userCreateDto = new UserCreateDto();
     userCreateDto._id = new mongoose.Types.ObjectId();
