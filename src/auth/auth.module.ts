@@ -6,13 +6,14 @@ import { JwtStrategy } from './jwt.strategy';
 import { UserRepository } from './users/user.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './users/user.schema';
+import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
-  providers: [AwsCognitoService, JwtStrategy, UserRepository],
+  providers: [AwsCognitoService, JwtStrategy, UserRepository, AwsSqsService],
   controllers: [AuthController],
 })
 export class AuthModule {}

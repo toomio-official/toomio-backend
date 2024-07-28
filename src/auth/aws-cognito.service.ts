@@ -21,13 +21,14 @@ import { AuthDeleteUserDto } from './dto/auth-delete-user.dto';
 import { UserRepository } from './users/user.repository';
 import { UserCreateDto } from './users/dto/userCreate.dto';
 import mongoose from 'mongoose';
+import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
 
 @Injectable()
 export class AwsCognitoService {
   private userPool: CognitoUserPool;
   private cognitoClient: CognitoIdentityProviderClient;
 
-  constructor(private userRepository: UserRepository) {
+  constructor(private userRepository: UserRepository, private awsSqsService: AwsSqsService) {
     this.userPool = new CognitoUserPool({
       UserPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
       ClientId: process.env.AWS_COGNITO_CLIENT_ID,
@@ -62,6 +63,10 @@ export class AwsCognitoService {
     userCreateDto.gender = gender;
     userCreateDto.birthDate = birthDate;
     await this.userRepository.createUser(userCreateDto);
+
+    let queueName: string = email.replace('@', '_').replace('.', '_');
+
+    await this.awsSqsService.createQueue(queueName);
 
     return new Promise((resolve, reject) => {
       this.userPool.signUp(
