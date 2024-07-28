@@ -64,9 +64,8 @@ export class AwsCognitoService {
     userCreateDto.birthDate = birthDate;
     await this.userRepository.createUser(userCreateDto);
 
-    let queueName: string = email.replace('@', '_').replace('.', '_');
 
-    await this.awsSqsService.createQueue(queueName);
+    await this.awsSqsService.createQueueForPosts(email);
 
     return new Promise((resolve, reject) => {
       this.userPool.signUp(
