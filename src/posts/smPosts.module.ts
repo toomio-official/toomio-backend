@@ -30,6 +30,7 @@ import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
     UserRepository,
     CommentsService,
     CommentRepository,
+    AwsSqsService,
   ],
 })
 export class SMPostsModule {}
