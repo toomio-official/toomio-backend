@@ -8,6 +8,7 @@ import { SMPostsModule } from './posts/smPosts.module';
 import { LikesModule } from './likes/likes.module';
 import { UsersModule } from './auth/users/users.module';
 import { CommentsModule } from './comments/comments.module';
+import { AwsSqsModule } from './aws-sqs/aws-sqs.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CommentsModule } from './comments/comments.module';
     LikesModule,
     UsersModule,
     CommentsModule,
+    AwsSqsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
