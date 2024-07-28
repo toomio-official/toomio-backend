@@ -20,7 +20,7 @@ import { AuthDeleteUserDto } from './dto/auth-delete-user.dto';
 
 @Controller('/auth')
 export class AuthController {
-  constructor(private awsCognitoService: AwsCognitoService) { }
+  constructor(private awsCognitoService: AwsCognitoService) {}
 
   @Post('/register')
   async register(@Body() authRegisterUserDto: AuthRegisterUserDto) {
