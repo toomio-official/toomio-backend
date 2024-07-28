@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export class UserCreateDto {
   _id: mongoose.Types.ObjectId;
