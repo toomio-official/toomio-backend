@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { SendMessageCommand, CreateQueueCommand, SQSClient } from '@aws-sdk/client-sqs';
+import {
+  paginateListQueues,
+  SendMessageCommand,
+  CreateQueueCommand,
+  SQSClient,
+} from '@aws-sdk/client-sqs';
+import { UsersService } from 'src/auth/users/users.service';
 
 @Injectable()
 export class AwsSqsService {
   private readonly client: SQSClient;
 
-  constructor() {
+  constructor(private usersService: UsersService) {
     this.client = new SQSClient({});
   }
 
-  async createQueueForPosts(email: string) {
+  async createQueueForUser(email: string) {
     let sqsQueueName: string = email.replace('@', '_').replace('.', '_');
 
     const command = new CreateQueueCommand({
@@ -29,10 +35,7 @@ export class AwsSqsService {
     }
   }
 
-  async sendMessageToPostsQueue(email: string) {
-    const sqsQueueName: string = email.replace('@', '_').replace('.', '_');
-    const queueBaseUrl = process.env.AWS_SQS_URL
-    const queueUrl = `${queueBaseUrl}/${sqsQueueName}`;
+  async sendMessageToAQueue(queueUrl: string) {
     const command = new SendMessageCommand({
       QueueUrl: queueUrl,
       DelaySeconds: 10,
@@ -57,5 +60,25 @@ export class AwsSqsService {
     const response = await this.client.send(command);
     console.log(response);
     return response;
+  }
+
+  async sendMessagesToAllUsersQueues(email: string) {
+    const queueUrls = await this.listAllQueues();
+    for (const queueUrl of queueUrls) {
+      await this.sendMessageToAQueue(queueUrl);
+    }
+  }
+
+  async listAllQueues() {
+    const paginatedListQueues = paginateListQueues({ client: this.client }, {});
+    const urls: string[] = [];
+
+    for await (const page of paginatedListQueues) {
+      const nextUrls = page.QueueUrls?.filter((qurl) => !!qurl) || [];
+      urls.push(...nextUrls);
+      nextUrls.forEach((url) => console.log(url));
+    }
+
+    return urls;
   }
 }

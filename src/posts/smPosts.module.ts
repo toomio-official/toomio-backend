@@ -13,6 +13,7 @@ import { CommentsService } from 'src/comments/comments.service';
 import { CommentRepository } from 'src/comments/comment.repository';
 import { Comment, CommentSchema } from 'src/comments/comment.schema';
 import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
+import { UsersService } from 'src/auth/users/users.service';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
     LikesService,
     LikeRepository,
     UserRepository,
+    UsersService,
     CommentsService,
     CommentRepository,
     AwsSqsService,

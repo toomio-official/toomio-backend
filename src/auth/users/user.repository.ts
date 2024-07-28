@@ -27,4 +27,8 @@ export class UserRepository {
       },
     );
   }
+
+  async getAllUsers(): Promise<User[]> {
+    return await this.userModel.find();
+  }
 }
