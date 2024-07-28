@@ -12,6 +12,7 @@ import { UserRepository } from 'src/auth/users/user.repository';
 import { CommentsService } from 'src/comments/comments.service';
 import { CommentRepository } from 'src/comments/comment.repository';
 import { Comment, CommentSchema } from 'src/comments/comment.schema';
+import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { Comment, CommentSchema } from 'src/comments/comment.schema';
     UserRepository,
     CommentsService,
     CommentRepository,
+    AwsSqsService
   ],
 })
 export class SMPostsModule {}
