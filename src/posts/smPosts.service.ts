@@ -29,8 +29,9 @@ export class SMPostsService {
     const createdSmPost: SMPost = await this.smPostRepository.createSMPost(
       smPostCreateDto,
     );
-    this.awsSqsService.sendMessagesToAllUsersQueues(createdSmPost.userEmail);
+    this.awsSqsService.sendMessagesToAllUsersQueues(createdSmPost.userEmail, createdSmPost._id.toString());
     return createdSmPost;
+    
   }
 
   async updateSmPost(smPostUpdateDto: SMPostUpdateDto): Promise<SMPost> {

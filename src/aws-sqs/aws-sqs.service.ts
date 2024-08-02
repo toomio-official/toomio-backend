@@ -35,26 +35,18 @@ export class AwsSqsService {
     }
   }
 
-  async sendMessageToAQueue(queueUrl: string) {
+  async sendMessageToAQueue(queueUrl: string, postId) {
     const command = new SendMessageCommand({
       QueueUrl: queueUrl,
       DelaySeconds: 10,
       MessageAttributes: {
-        Title: {
+        Id: {
           DataType: 'String',
-          StringValue: 'The Whistler',
-        },
-        Author: {
-          DataType: 'String',
-          StringValue: 'John Grisham',
-        },
-        WeeksOn: {
-          DataType: 'Number',
-          StringValue: '6',
+          StringValue: postId,
         },
       },
       MessageBody:
-        'Information about current NY Times fiction bestseller for week of 12/11/2016.',
+        'Post IDs to be seen by the user.',
     });
 
     const response = await this.client.send(command);
@@ -62,10 +54,10 @@ export class AwsSqsService {
     return response;
   }
 
-  async sendMessagesToAllUsersQueues(email: string) {
+  async sendMessagesToAllUsersQueues(email: string, postId: string) {
     const queueUrls = await this.listAllQueues();
     for (const queueUrl of queueUrls) {
-      await this.sendMessageToAQueue(queueUrl);
+      await this.sendMessageToAQueue(queueUrl, postId);
     }
   }
 

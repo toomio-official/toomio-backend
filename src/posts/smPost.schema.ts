@@ -7,6 +7,7 @@ export type SMPostDocument = SMPost & Document;
 
 @Schema()
 export class SMPost {
+  _id: mongoose.Types.ObjectId;
   @Prop({ default: Date.now })
   createdAt: Date;
   @Prop()
