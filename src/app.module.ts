@@ -9,6 +9,7 @@ import { LikesModule } from './likes/likes.module';
 import { UsersModule } from './auth/users/users.module';
 import { CommentsModule } from './comments/comments.module';
 import { AwsSqsModule } from './aws-sqs/aws-sqs.module';
+import { FeedModule } from './feed/feed.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AwsSqsModule } from './aws-sqs/aws-sqs.module';
     UsersModule,
     CommentsModule,
     AwsSqsModule,
+    FeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

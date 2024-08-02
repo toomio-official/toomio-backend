@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
-import { SMPostsController } from './smPosts.controller';
-import { SMPostsService } from './smPosts.service';
-import { SMPostRepository } from './smPost.repository';
-import { SMPost, SMPostSchema } from './smPost.schema';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Like, LikeSchema } from 'src/likes/like.schema';
-import { User, UserSchema } from 'src/auth/users/user.schema';
+import { FeedService } from './feed.service';
+import { FeedController } from './feed.controller';
+import { SMPostsService } from 'src/posts/smPosts.service';
+import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
+import { SMPostRepository } from 'src/posts/smPost.repository';
 import { LikesService } from 'src/likes/likes.service';
-import { LikeRepository } from 'src/likes/like.repository';
 import { UserRepository } from 'src/auth/users/user.repository';
 import { CommentsService } from 'src/comments/comments.service';
-import { CommentRepository } from 'src/comments/comment.repository';
-import { Comment, CommentSchema } from 'src/comments/comment.schema';
-import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
 import { UsersService } from 'src/auth/users/users.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { SMPost, SMPostSchema } from 'src/posts/smPost.schema';
+import { Like, LikeSchema } from 'src/likes/like.schema';
+import { User, UserSchema } from 'src/auth/users/user.schema';
+import { Comment, CommentSchema } from 'src/comments/comment.schema';
+import { LikeRepository } from 'src/likes/like.repository';
+import { CommentRepository } from 'src/comments/comment.repository';
 
 @Module({
   imports: [
@@ -22,17 +23,18 @@ import { UsersService } from 'src/auth/users/users.service';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
   ],
-  controllers: [SMPostsController],
   providers: [
+    FeedService,
     SMPostsService,
+    AwsSqsService,
     SMPostRepository,
     LikesService,
-    LikeRepository,
     UserRepository,
-    UsersService,
     CommentsService,
+    UsersService,
+    LikeRepository,
     CommentRepository,
-    AwsSqsService,
   ],
+  controllers: [FeedController],
 })
-export class SMPostsModule {}
+export class FeedModule {}

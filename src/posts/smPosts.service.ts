@@ -13,6 +13,7 @@ import { User } from 'src/auth/users/user.schema';
 import { CommentSmPostDto } from 'src/comments/commentSmPost.dto';
 import { CommentsService } from 'src/comments/comments.service';
 import { UserRepository } from '../auth/users/user.repository';
+import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
 
 @Injectable()
 export class SMPostsService {
@@ -21,10 +22,18 @@ export class SMPostsService {
     private likeService: LikesService,
     private userRepository: UserRepository,
     private commentService: CommentsService,
+    private awsSqsService: AwsSqsService,
   ) {}
 
   async createSMPost(smPostCreateDto: SMPostCreateDto): Promise<SMPost> {
-    return await this.smPostRepository.createSMPost(smPostCreateDto);
+    const createdSmPost: SMPost = await this.smPostRepository.createSMPost(
+      smPostCreateDto,
+    );
+    this.awsSqsService.sendMessagesToAllUsersQueues(
+      createdSmPost.userEmail,
+      createdSmPost._id.toString(),
+    );
+    return createdSmPost;
   }
 
   async updateSmPost(smPostUpdateDto: SMPostUpdateDto): Promise<SMPost> {
@@ -95,5 +104,9 @@ export class SMPostsService {
       commentSmPostDto.smPostId,
       newComment._id,
     );
+  }
+
+  async getPostsByIds(ids: string[]): Promise<SMPost[]> {
+    return await this.smPostRepository.getPostsByIds(ids);
   }
 }

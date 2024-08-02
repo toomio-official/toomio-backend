@@ -38,4 +38,8 @@ export class UsersService {
     followerUser.following.push(followingUser);
     return await this.userRepository.updateUser(followerUser);
   }
+
+  async getAllUsers(): Promise<User[]> {
+    return await this.userRepository.getAllUsers();
+  }
 }
