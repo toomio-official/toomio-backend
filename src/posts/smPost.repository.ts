@@ -72,4 +72,8 @@ export class SMPostRepository {
       { $push: { comments: commentId } },
     );
   }
+
+  async getPostsByIds(postIds: string[]): Promise<SMPost[]> {
+    return await this.smPostModel.find({ _id: { $in: postIds } });
+  }
 }

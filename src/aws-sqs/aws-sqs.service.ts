@@ -4,6 +4,8 @@ import {
   SendMessageCommand,
   CreateQueueCommand,
   SQSClient,
+  ReceiveMessageCommandInput,
+  ReceiveMessageCommand,
 } from '@aws-sdk/client-sqs';
 import { UsersService } from 'src/auth/users/users.service';
 
@@ -45,8 +47,7 @@ export class AwsSqsService {
           StringValue: postId,
         },
       },
-      MessageBody:
-        'Post IDs to be seen by the user.',
+      MessageBody: 'Post IDs to be seen by the user.',
     });
 
     const response = await this.client.send(command);
@@ -72,5 +73,24 @@ export class AwsSqsService {
     }
 
     return urls;
+  }
+
+  async receiveMessages(
+    queueUrl: string,
+    maxNumberOfMessages: number = 10,
+    waitTimeSeconds: number = 20,
+  ) {
+    const input: ReceiveMessageCommandInput = {
+      QueueUrl: queueUrl,
+      AttributeNames: ['All'],
+      MessageAttributeNames: ['All'],
+      MaxNumberOfMessages: maxNumberOfMessages,
+      WaitTimeSeconds: waitTimeSeconds,
+    };
+
+    const command = new ReceiveMessageCommand(input);
+    const response = await this.client.send(command);
+
+    return response.Messages;
   }
 }

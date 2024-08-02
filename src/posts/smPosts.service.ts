@@ -29,9 +29,11 @@ export class SMPostsService {
     const createdSmPost: SMPost = await this.smPostRepository.createSMPost(
       smPostCreateDto,
     );
-    this.awsSqsService.sendMessagesToAllUsersQueues(createdSmPost.userEmail, createdSmPost._id.toString());
+    this.awsSqsService.sendMessagesToAllUsersQueues(
+      createdSmPost.userEmail,
+      createdSmPost._id.toString(),
+    );
     return createdSmPost;
-    
   }
 
   async updateSmPost(smPostUpdateDto: SMPostUpdateDto): Promise<SMPost> {
@@ -102,5 +104,9 @@ export class SMPostsService {
       commentSmPostDto.smPostId,
       newComment._id,
     );
+  }
+
+  async getPostsByIds(ids: string[]): Promise<SMPost[]> {
+    return await this.smPostRepository.getPostsByIds(ids);
   }
 }
