@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   NotFoundException,
   Param,
@@ -44,5 +45,12 @@ export class JourneysController {
   ): Promise<Journey> {
     journeyUpdateDto._id = journeyId;
     return await this.journeysService.updateJourney(journeyUpdateDto);
+  }
+
+  @Get('/user/:userEmail')
+  async getJourneysByUser(
+    @Param('userEmail') userEmail: string,
+  ): Promise<Journey[]> {
+    return await this.journeysService.getJourneysByUser(userEmail);
   }
 }

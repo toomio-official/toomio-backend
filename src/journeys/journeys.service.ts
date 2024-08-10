@@ -20,4 +20,8 @@ export class JourneysService {
   async updateJourney(JourneyUpdateDto: JourneyUpdateDto): Promise<Journey> {
     return await this.journeyRepository.updateJourney(JourneyUpdateDto);
   }
+
+  async getJourneysByUser(userEmail: string): Promise<Journey[]> {
+    return await this.journeyRepository.getJourneysByUser(userEmail);
+  }
 }
