@@ -17,6 +17,7 @@ import { SMPost } from './smPost.schema';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 import { LikeSmPostDto } from 'src/likes/likeSmPost.dto';
 import { CommentSmPostDto } from 'src/comments/commentSmPost.dto';
+import { Comment } from 'src/comments/comment.schema';
 
 @Controller('posts')
 export class SMPostsController {
@@ -69,6 +70,11 @@ export class SMPostsController {
   async getCommentsCount(@Param('smPostId') smPostId: string): Promise<{ count: number }> {
     const count = await this.smPostService.getCommentsCount(smPostId);
     return { count };
+  }
+
+  @Get('/:smPostId/comments')
+  async getCommentsByPostId(@Param('smPostId') smPostId: string): Promise<Comment[]> {
+    return await this.smPostService.getCommentsByPostId(smPostId);
   }
 
   @Get('/user/:userEmail')
