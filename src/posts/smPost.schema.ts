@@ -18,9 +18,9 @@ export class SMPost {
   imageUrls: string[];
   @Prop()
   userEmail: string;
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Like' })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Like' }] })
   likes: Like[];
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
   comments: Comment[];
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Journey' })
   journey: Journey;

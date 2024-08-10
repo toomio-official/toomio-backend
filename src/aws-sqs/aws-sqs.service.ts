@@ -24,7 +24,7 @@ export class AwsSqsService {
       QueueName: sqsQueueName,
       Attributes: {
         DelaySeconds: '60',
-        MessageRetentionPeriod: '2592000',
+        MessageRetentionPeriod: '1123200',
       },
     });
 

@@ -56,6 +56,15 @@ export class SMPostRepository {
     );
   }
 
+  async getLikesCountForPost(smPostId: string): Promise<number> {
+    const objId = new mongoose.Types.ObjectId(smPostId);
+    const post = await this.smPostModel.findById(objId);
+    if (!post) {
+      return 0;
+    }
+    return post.likes ? post.likes.length : 0;
+  }
+
   async commentAPost(
     smPostId: string,
     newCommentId: mongoose.Types.ObjectId,
@@ -71,6 +80,15 @@ export class SMPostRepository {
       { _id: smPostId },
       { $push: { comments: commentId } },
     );
+  }
+
+  async getCommentsCountForPost(smPostId: string): Promise<number> {
+    const objId = new mongoose.Types.ObjectId(smPostId);
+    const post = await this.smPostModel.findById(objId);
+    if (!post) {
+      return 0;
+    }
+    return post.comments ? post.comments.length : 0;
   }
 
   async getPostsByIds(postIds: string[]): Promise<SMPost[]> {

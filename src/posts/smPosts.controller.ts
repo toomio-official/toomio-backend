@@ -52,11 +52,23 @@ export class SMPostsController {
     return await this.smPostService.likeAPost(likeSmPostDto);
   }
 
+  @Get('/:smPostId/likes/count')
+  async getLikesCount(@Param('smPostId') smPostId: string): Promise<{ count: number }> {
+    const count = await this.smPostService.getLikesCount(smPostId);
+    return { count };
+  }
+
   @Put('/commentpost')
   async commentPost(
     @Body() commentSmPostDto: CommentSmPostDto,
   ): Promise<SMPost> {
     return await this.smPostService.commentAPost(commentSmPostDto);
+  }
+
+  @Get('/:smPostId/comments/count')
+  async getCommentsCount(@Param('smPostId') smPostId: string): Promise<{ count: number }> {
+    const count = await this.smPostService.getCommentsCount(smPostId);
+    return { count };
   }
 
   @Get('/user/:userEmail')
