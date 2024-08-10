@@ -14,6 +14,8 @@ export class SMPost {
   title: string;
   @Prop()
   content: string;
+  @Prop({ type: [String] })
+  imageUrls: string[];
   @Prop()
   userEmail: string;
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Like' })
