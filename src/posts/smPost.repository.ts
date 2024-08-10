@@ -80,4 +80,15 @@ export class SMPostRepository {
   async getPostsByUser(userEmail: string): Promise<SMPost[]> {
     return await this.smPostModel.find({ userEmail: userEmail }).exec();
   }
+
+  async getLikesCountForPost(smPostId: string): Promise<number> {
+    const objId = new mongoose.Types.ObjectId(smPostId);
+    const post = await this.smPostModel.findById(objId);
+    console.log(post);
+    if (!post) {
+      return 0;
+    }
+    // console.log(post.likes.length);
+    return post.likes ? post.likes.length : 0;
+  }
 }

@@ -113,4 +113,10 @@ export class SMPostsService {
   async getPostsByUser(userEmail: string): Promise<SMPost[]> {
     return await this.smPostRepository.getPostsByUser(userEmail);
   }
+
+  async getLikesCount(smPostId: string): Promise<number> {
+    const count = await this.smPostRepository.getLikesCountForPost(smPostId);
+    console.log('count: ' + count);
+    return count;
+  }
 }

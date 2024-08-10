@@ -52,6 +52,12 @@ export class SMPostsController {
     return await this.smPostService.likeAPost(likeSmPostDto);
   }
 
+  @Get('/:smPostId/likes/count')
+  async getLikesCount(@Param('smPostId') smPostId: string): Promise<{ count: number }> {
+    const count = await this.smPostService.getLikesCount(smPostId);
+    return { count };
+  }
+
   @Put('/commentpost')
   async commentPost(
     @Body() commentSmPostDto: CommentSmPostDto,
