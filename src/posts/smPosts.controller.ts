@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   NotFoundException,
   Param,
@@ -56,5 +57,10 @@ export class SMPostsController {
     @Body() commentSmPostDto: CommentSmPostDto,
   ): Promise<SMPost> {
     return await this.smPostService.commentAPost(commentSmPostDto);
+  }
+
+  @Get('/user/:userEmail')
+  async getPostsByUser(@Param('userEmail') userEmail: string): Promise<SMPost[]> {
+    return await this.smPostService.getPostsByUser(userEmail);
   }
 }

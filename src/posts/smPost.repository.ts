@@ -76,4 +76,8 @@ export class SMPostRepository {
   async getPostsByIds(postIds: string[]): Promise<SMPost[]> {
     return await this.smPostModel.find({ _id: { $in: postIds } });
   }
+
+  async getPostsByUser(userEmail: string): Promise<SMPost[]> {
+    return await this.smPostModel.find({ userEmail: userEmail }).exec();
+  }
 }
