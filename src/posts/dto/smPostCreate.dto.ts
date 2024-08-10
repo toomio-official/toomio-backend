@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsArray,
+  IsUrl,
+} from 'class-validator';
 
 export class SMPostCreateDto {
   @IsNotEmpty()
@@ -9,4 +15,8 @@ export class SMPostCreateDto {
   userEmail: string;
   @IsNotEmpty()
   journey: string;
+  @IsOptional()
+  @IsArray()
+  @IsUrl({}, { each: true })
+  imageUrls?: string[];
 }
