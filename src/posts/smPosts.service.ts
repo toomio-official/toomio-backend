@@ -14,6 +14,7 @@ import { CommentSmPostDto } from 'src/comments/commentSmPost.dto';
 import { CommentsService } from 'src/comments/comments.service';
 import { UserRepository } from '../auth/users/user.repository';
 import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
+import { Comment } from 'src/comments/comment.schema';
 
 @Injectable()
 export class SMPostsService {
@@ -115,6 +116,10 @@ export class SMPostsService {
   async getCommentsCount(smPostId: string): Promise<number> {
     const count = await this.smPostRepository.getCommentsCountForPost(smPostId);
     return count;
+  }
+
+  async getCommentsByPostId(smPostId: string): Promise<Comment[]> {
+    return await this.smPostRepository.getCommentsByPostId(smPostId);
   }
 
   async getPostsByIds(ids: string[]): Promise<SMPost[]> {

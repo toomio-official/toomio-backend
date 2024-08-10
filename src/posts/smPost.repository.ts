@@ -6,6 +6,7 @@ import { SMPostCreateDto } from './dto/smPostCreate.dto';
 import { SMPostUpdateDto } from './dto/smPostUpdate.dto';
 import { Like } from 'src/likes/like.schema';
 import { User } from 'src/auth/users/user.schema';
+import { Comment } from 'src/comments/comment.schema';
 
 @Injectable()
 export class SMPostRepository {
@@ -13,6 +14,7 @@ export class SMPostRepository {
     @InjectModel(SMPost.name) private smPostModel: Model<SMPost>,
     @InjectModel(Like.name) private likeSmPostModel: Model<Like>,
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Comment.name) private commentModel: Model<Comment>,
   ) {}
 
   async createSMPost(smPostCreateDto: SMPostCreateDto): Promise<SMPost> {
@@ -89,6 +91,12 @@ export class SMPostRepository {
       return 0;
     }
     return post.comments ? post.comments.length : 0;
+  }
+
+  async getCommentsByPostId(smPostId: string): Promise<Comment[]> {
+    const objId = new mongoose.Types.ObjectId(smPostId);
+    const post = await this.smPostModel.findById(objId).populate<{ comments: Comment[] }>('comments');
+    return post ? post.comments : [];
   }
 
   async getPostsByIds(postIds: string[]): Promise<SMPost[]> {
