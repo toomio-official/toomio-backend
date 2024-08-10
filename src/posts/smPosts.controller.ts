@@ -65,6 +65,12 @@ export class SMPostsController {
     return await this.smPostService.commentAPost(commentSmPostDto);
   }
 
+  @Get('/:smPostId/comments/count')
+  async getCommentsCount(@Param('smPostId') smPostId: string): Promise<{ count: number }> {
+    const count = await this.smPostService.getCommentsCount(smPostId);
+    return { count };
+  }
+
   @Get('/user/:userEmail')
   async getPostsByUser(@Param('userEmail') userEmail: string): Promise<SMPost[]> {
     return await this.smPostService.getPostsByUser(userEmail);

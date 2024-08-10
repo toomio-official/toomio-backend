@@ -78,6 +78,12 @@ export class SMPostsService {
     );
   }
 
+  async getLikesCount(smPostId: string): Promise<number> {
+    const count = await this.smPostRepository.getLikesCountForPost(smPostId);
+    console.log('count: ' + count);
+    return count;
+  }
+
   async commentAPost(commentSmPostDto: CommentSmPostDto): Promise<SMPost> {
     const post = await this.smPostRepository.findById(
       commentSmPostDto.smPostId,
@@ -106,17 +112,16 @@ export class SMPostsService {
     );
   }
 
+  async getCommentsCount(smPostId: string): Promise<number> {
+    const count = await this.smPostRepository.getCommentsCountForPost(smPostId);
+    return count;
+  }
+
   async getPostsByIds(ids: string[]): Promise<SMPost[]> {
     return await this.smPostRepository.getPostsByIds(ids);
   }
 
   async getPostsByUser(userEmail: string): Promise<SMPost[]> {
     return await this.smPostRepository.getPostsByUser(userEmail);
-  }
-
-  async getLikesCount(smPostId: string): Promise<number> {
-    const count = await this.smPostRepository.getLikesCountForPost(smPostId);
-    console.log('count: ' + count);
-    return count;
   }
 }
