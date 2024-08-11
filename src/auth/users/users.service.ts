@@ -56,4 +56,12 @@ export class UsersService {
   async getAllUsers(): Promise<User[]> {
     return await this.userRepository.getAllUsers();
   }
+
+  async getFollowersCount(userEmail: string): Promise<number> {
+    const user = await this.userRepository.findAUser(userEmail);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return await this.userRepository.getFollowersCount(user._id);
+  }
 }

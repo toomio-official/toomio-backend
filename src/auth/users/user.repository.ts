@@ -31,4 +31,8 @@ export class UserRepository {
   async getAllUsers(): Promise<User[]> {
     return await this.userModel.find();
   }
+
+  async getFollowersCount(userId: mongoose.Types.ObjectId): Promise<number> {
+    return await this.userModel.countDocuments({ following: userId });
+  }
 }
