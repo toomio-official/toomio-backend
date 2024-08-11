@@ -15,6 +15,12 @@ import { User, UserSchema } from 'src/auth/users/user.schema';
 import { Comment, CommentSchema } from 'src/comments/comment.schema';
 import { LikeRepository } from 'src/likes/like.repository';
 import { CommentRepository } from 'src/comments/comment.repository';
+import {
+  Notification,
+  NotificationSchema,
+} from 'src/notifications/notification.schema';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationRepository } from 'src/notifications/notifications.repository';
 
 @Module({
   imports: [
@@ -22,6 +28,9 @@ import { CommentRepository } from 'src/comments/comment.repository';
     MongooseModule.forFeature([{ name: Like.name, schema: LikeSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
+    MongooseModule.forFeature([
+      { name: Notification.name, schema: NotificationSchema },
+    ]),
   ],
   providers: [
     FeedService,
@@ -34,6 +43,8 @@ import { CommentRepository } from 'src/comments/comment.repository';
     UsersService,
     LikeRepository,
     CommentRepository,
+    NotificationsService,
+    NotificationRepository,
   ],
   controllers: [FeedController],
 })

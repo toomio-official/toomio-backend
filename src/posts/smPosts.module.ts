@@ -14,6 +14,12 @@ import { CommentRepository } from 'src/comments/comment.repository';
 import { Comment, CommentSchema } from 'src/comments/comment.schema';
 import { AwsSqsService } from 'src/aws-sqs/aws-sqs.service';
 import { UsersService } from 'src/auth/users/users.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationRepository } from 'src/notifications/notifications.repository';
+import {
+  Notification,
+  NotificationSchema,
+} from 'src/notifications/notification.schema';
 
 @Module({
   imports: [
@@ -21,6 +27,9 @@ import { UsersService } from 'src/auth/users/users.service';
     MongooseModule.forFeature([{ name: Like.name, schema: LikeSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
+    MongooseModule.forFeature([
+      { name: Notification.name, schema: NotificationSchema },
+    ]),
   ],
   controllers: [SMPostsController],
   providers: [
@@ -33,6 +42,8 @@ import { UsersService } from 'src/auth/users/users.service';
     CommentsService,
     CommentRepository,
     AwsSqsService,
+    NotificationsService,
+    NotificationRepository,
   ],
 })
 export class SMPostsModule {}

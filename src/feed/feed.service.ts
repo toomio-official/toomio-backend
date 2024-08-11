@@ -4,31 +4,28 @@ import { SMPostsService } from 'src/posts/smPosts.service';
 
 @Injectable()
 export class FeedService {
-    constructor(
-        private smPostsService: SMPostsService,
-        private sqsService: AwsSqsService,
-    ) {}
+  constructor(
+    private smPostsService: SMPostsService,
+    private sqsService: AwsSqsService,
+  ) {}
 
+  async getFeedForAUser(userEmail: string) {
+    let sqsQueueName: string = userEmail.replace('@', '_').replace('.', '_');
+    const queueBaseUrl = process.env.AWS_SQS_URL;
+    const queueUrl = queueBaseUrl + '/' + sqsQueueName;
 
-    async getFeedForAUser(userEmail: string) {
+    const queueResponse = await this.sqsService.receiveMessages(queueUrl);
 
-        let sqsQueueName: string = userEmail.replace('@', '_').replace('.', '_');
-        const queueBaseUrl = process.env.AWS_SQS_URL;
-        const queueUrl = queueBaseUrl +'/' + sqsQueueName;
+    let postIds = [];
 
-        const queueResponse = await this.sqsService.receiveMessages(queueUrl);
-
-        let postIds = [];
-
-        if (queueResponse === undefined) {
-            return [];
-        }
-        for (let message of queueResponse) {
-            postIds.push(message.MessageAttributes.Id.StringValue);
-        }
-
-        const posts = await this.smPostsService.getPostsByIds(postIds);
-        return posts;
-
+    if (queueResponse === undefined) {
+      return [];
     }
+    for (let message of queueResponse) {
+      postIds.push(message.MessageAttributes.Id.StringValue);
+    }
+
+    const posts = await this.smPostsService.getPostsByIds(postIds);
+    return posts;
+  }
 }

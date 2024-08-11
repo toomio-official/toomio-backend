@@ -6,10 +6,15 @@ import {
 import { UserFollowDto } from './dto/userFollow.dto';
 import { User } from './user.schema';
 import { UserRepository } from './user.repository';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UsersService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private notificationsService: NotificationsService,
+  ) {}
 
   async FollowUser(userFollowDto: UserFollowDto): Promise<User> {
     const followerUserEmail = userFollowDto.followerUserEmail;
@@ -36,7 +41,16 @@ export class UsersService {
     }
 
     followerUser.following.push(followingUser);
-    return await this.userRepository.updateUser(followerUser);
+    await this.userRepository.updateUser(followerUser);
+
+    await this.notificationsService.createNotification({
+      _id: new ObjectId(),
+      createdAt: new Date(),
+      userEmail: followingUserEmail,
+      notificationString: `${followerUserEmail} has followed you.`,
+    });
+
+    return followerUser;
   }
 
   async getAllUsers(): Promise<User[]> {

@@ -54,7 +54,9 @@ export class SMPostsController {
   }
 
   @Get('/:smPostId/likes/count')
-  async getLikesCount(@Param('smPostId') smPostId: string): Promise<{ count: number }> {
+  async getLikesCount(
+    @Param('smPostId') smPostId: string,
+  ): Promise<{ count: number }> {
     const count = await this.smPostService.getLikesCount(smPostId);
     return { count };
   }
@@ -67,18 +69,24 @@ export class SMPostsController {
   }
 
   @Get('/:smPostId/comments/count')
-  async getCommentsCount(@Param('smPostId') smPostId: string): Promise<{ count: number }> {
+  async getCommentsCount(
+    @Param('smPostId') smPostId: string,
+  ): Promise<{ count: number }> {
     const count = await this.smPostService.getCommentsCount(smPostId);
     return { count };
   }
 
   @Get('/:smPostId/comments')
-  async getCommentsByPostId(@Param('smPostId') smPostId: string): Promise<Comment[]> {
+  async getCommentsByPostId(
+    @Param('smPostId') smPostId: string,
+  ): Promise<Comment[]> {
     return await this.smPostService.getCommentsByPostId(smPostId);
   }
 
   @Get('/user/:userEmail')
-  async getPostsByUser(@Param('userEmail') userEmail: string): Promise<SMPost[]> {
+  async getPostsByUser(
+    @Param('userEmail') userEmail: string,
+  ): Promise<SMPost[]> {
     return await this.smPostService.getPostsByUser(userEmail);
   }
 }

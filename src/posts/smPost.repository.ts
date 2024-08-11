@@ -95,7 +95,9 @@ export class SMPostRepository {
 
   async getCommentsByPostId(smPostId: string): Promise<Comment[]> {
     const objId = new mongoose.Types.ObjectId(smPostId);
-    const post = await this.smPostModel.findById(objId).populate<{ comments: Comment[] }>('comments');
+    const post = await this.smPostModel
+      .findById(objId)
+      .populate<{ comments: Comment[] }>('comments');
     return post ? post.comments : [];
   }
 
