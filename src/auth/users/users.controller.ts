@@ -27,4 +27,10 @@ export class UsersController {
     const count = await this.userService.getFollowersCount(email);
     return { count };
   }
+
+  @Get(':email/following-count')
+  async getFollowingCount(@Param('email') email: string): Promise<{ count: number }> {
+    const count = await this.userService.getFollowingCount(email);
+    return { count };
+  }
 }

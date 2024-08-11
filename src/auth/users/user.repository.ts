@@ -35,4 +35,9 @@ export class UserRepository {
   async getFollowersCount(userId: mongoose.Types.ObjectId): Promise<number> {
     return await this.userModel.countDocuments({ following: userId });
   }
+
+  async getFollowingCount(userEmail: string): Promise<number> {
+    const user = await this.userModel.findOne({ email: userEmail });
+    return user ? user.following.length : 0;
+  }
 }

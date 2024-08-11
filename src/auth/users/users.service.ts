@@ -64,4 +64,8 @@ export class UsersService {
     }
     return await this.userRepository.getFollowersCount(user._id);
   }
+
+  async getFollowingCount(userEmail: string): Promise<number> {
+    return await this.userRepository.getFollowingCount(userEmail);
+  }
 }
