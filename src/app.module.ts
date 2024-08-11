@@ -10,6 +10,7 @@ import { UsersModule } from './auth/users/users.module';
 import { CommentsModule } from './comments/comments.module';
 import { AwsSqsModule } from './aws-sqs/aws-sqs.module';
 import { FeedModule } from './feed/feed.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { FeedModule } from './feed/feed.module';
     CommentsModule,
     AwsSqsModule,
     FeedModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
