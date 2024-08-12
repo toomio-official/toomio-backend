@@ -57,6 +57,10 @@ export class UsersService {
     return await this.userRepository.getAllUsers();
   }
 
+  async findUserByEmail(userEmail: string): Promise<User> {
+    return await this.userRepository.findAUser(userEmail);
+  }
+
   async getFollowersCount(userEmail: string): Promise<number> {
     const user = await this.userRepository.findAUser(userEmail);
     if (!user) {

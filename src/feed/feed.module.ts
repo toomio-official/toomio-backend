@@ -21,6 +21,9 @@ import {
 } from 'src/notifications/notification.schema';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { NotificationRepository } from 'src/notifications/notifications.repository';
+import { JourneyRepository } from 'src/journeys/journey.repository';
+import { Journey, JourneySchema } from 'src/journeys/journey.schema';
+import { JourneysService } from 'src/journeys/journeys.service';
 
 @Module({
   imports: [
@@ -31,6 +34,7 @@ import { NotificationRepository } from 'src/notifications/notifications.reposito
     MongooseModule.forFeature([
       { name: Notification.name, schema: NotificationSchema },
     ]),
+    MongooseModule.forFeature([{ name: Journey.name, schema: JourneySchema }]),
   ],
   providers: [
     FeedService,
@@ -45,6 +49,8 @@ import { NotificationRepository } from 'src/notifications/notifications.reposito
     CommentRepository,
     NotificationsService,
     NotificationRepository,
+    JourneyRepository,
+    JourneysService,
   ],
   controllers: [FeedController],
 })
