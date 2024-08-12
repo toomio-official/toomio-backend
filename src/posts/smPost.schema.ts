@@ -24,6 +24,10 @@ export class SMPost {
   comments: Comment[];
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Journey' })
   journey: Journey;
+  @Prop()
+  userName: string;
+  @Prop()
+  journeyName: string;
 }
 
 export const SMPostSchema = SchemaFactory.createForClass(SMPost);

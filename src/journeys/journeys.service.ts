@@ -24,4 +24,8 @@ export class JourneysService {
   async getJourneysByUser(userEmail: string): Promise<Journey[]> {
     return await this.journeyRepository.getJourneysByUser(userEmail);
   }
+
+  async findJourneyById(journeyId: string): Promise<Journey> {
+    return await this.journeyRepository.findById(journeyId);
+  }
 }

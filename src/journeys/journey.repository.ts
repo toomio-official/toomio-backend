@@ -39,4 +39,8 @@ export class JourneyRepository {
   async getJourneysByUser(userEmail: string): Promise<Journey[]> {
     return await this.journeyModel.find({ userEmail: userEmail }).exec();
   }
+
+  async findById(id: string): Promise<Journey | null> {
+    return await this.journeyModel.findById(id).exec();
+  }
 }
