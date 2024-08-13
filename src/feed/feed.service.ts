@@ -15,7 +15,7 @@ export class FeedService {
   ) {}
 
   async getFeedForAUser(userEmail: string) {
-    let sqsQueueName: string = userEmail.replace('@', '_').replace('.', '_');
+    let sqsQueueName: string = userEmail.replace(/@/g, '_').replace(/\./g, '_');
     const queueBaseUrl = process.env.AWS_SQS_URL;
     const queueUrl = queueBaseUrl + '/' + sqsQueueName;
 
