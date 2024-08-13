@@ -32,6 +32,7 @@ export class FeedService {
 
     let posts = await this.smPostsService.getPostsByIds(postIds);
 
+    posts = await this.smPostsService.getAllPosts();
     for (let post of posts) {
       const user = await this.userService.findUserByEmail(post.userEmail);
       const journey = await this.journeysService.findJourneyById(
@@ -47,7 +48,6 @@ export class FeedService {
       }
     }
 
-    posts = await this.smPostsService.getAllPosts();
     return posts;
   }
 }
