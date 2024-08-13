@@ -28,6 +28,8 @@ export class SMPost {
   userName: string;
   @Prop()
   journeyName: string;
+  @Prop()
+  userProfilePicture: string;
 }
 
 export const SMPostSchema = SchemaFactory.createForClass(SMPost);

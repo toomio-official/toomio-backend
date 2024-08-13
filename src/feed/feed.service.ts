@@ -15,24 +15,24 @@ export class FeedService {
   ) {}
 
   async getFeedForAUser(userEmail: string) {
-    let sqsQueueName: string = userEmail.replace(/@/g, '_').replace(/\./g, '_');
-    const queueBaseUrl = process.env.AWS_SQS_URL;
-    const queueUrl = queueBaseUrl + '/' + sqsQueueName;
+    // let sqsQueueName: string = userEmail.replace('@', '_').replace('.', '_');
+    // const queueBaseUrl = process.env.AWS_SQS_URL;
+    // const queueUrl = queueBaseUrl + '/' + sqsQueueName;
 
-    const queueResponse = await this.sqsService.receiveMessages(queueUrl);
+    // const queueResponse = await this.sqsService.receiveMessages(queueUrl);
 
-    let postIds = [];
+    // let postIds = [];
 
-    if (queueResponse === undefined) {
-      return [];
-    }
-    for (let message of queueResponse) {
-      postIds.push(message.MessageAttributes.Id.StringValue);
-    }
+    // if (queueResponse === undefined) {
+    //   return [];
+    // }
+    // for (let message of queueResponse) {
+    //   postIds.push(message.MessageAttributes.Id.StringValue);
+    // }
 
-    let posts = await this.smPostsService.getPostsByIds(postIds);
+    // let posts = await this.smPostsService.getPostsByIds(postIds);
 
-    posts = await this.smPostsService.getAllPosts();
+    let posts = await this.smPostsService.getAllPosts();
     for (let post of posts) {
       const user = await this.userService.findUserByEmail(post.userEmail);
       const journey = await this.journeysService.findJourneyById(
@@ -41,6 +41,7 @@ export class FeedService {
 
       if (user) {
         post.userName = `${user.firstName} ${user.lastName}`;
+        post.userProfilePicture = user.profilePicture;
       }
 
       if (journey) {
