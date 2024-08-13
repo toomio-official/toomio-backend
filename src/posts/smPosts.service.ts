@@ -129,4 +129,8 @@ export class SMPostsService {
   async getPostsByUser(userEmail: string): Promise<SMPost[]> {
     return await this.smPostRepository.getPostsByUser(userEmail);
   }
+
+  async getAllPosts(): Promise<SMPost[]> {
+    return await this.smPostRepository.getAllPosts();
+  }
 }

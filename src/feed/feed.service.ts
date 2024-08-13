@@ -30,7 +30,7 @@ export class FeedService {
       postIds.push(message.MessageAttributes.Id.StringValue);
     }
 
-    const posts = await this.smPostsService.getPostsByIds(postIds);
+    let posts = await this.smPostsService.getPostsByIds(postIds);
 
     for (let post of posts) {
       const user = await this.userService.findUserByEmail(post.userEmail);
@@ -46,6 +46,8 @@ export class FeedService {
         post.journeyName = journey.title;
       }
     }
+
+    posts = await this.smPostsService.getAllPosts();
     return posts;
   }
 }
