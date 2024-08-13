@@ -28,6 +28,24 @@ jobs:
         run: |
           docker build -t ${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
 
+      - ⁠name: Image Vulnerability Scan with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ secrets.IMAGE_NAME }}:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          output: 'trivy-image-scan-results.txt'
+
+      - name: Upload Trivy Image Scan Results Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-image-scan-results
+          path: trivy-image-scan-results.txt
+
       - name: Push the image to ECR
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin  ${{ secrets.IMAGE_NAME }}
