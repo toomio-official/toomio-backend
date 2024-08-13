@@ -24,6 +24,11 @@ jobs:
           role-session-name: 'GitHub_to_AWS_via_FederatedOIDC'
           aws-region: 'us-east-1'
 
+      - name: Run Unit Test
+        run: |
+          npm install
+          npm run test
+
       - name: Build with Docker
         run: |
           docker build -t ${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
