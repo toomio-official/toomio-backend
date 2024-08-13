@@ -4,42 +4,6 @@
 
 This repository contains the backend for the Toomio social media application. It is built using a modular monolithic architecture, providing a robust and scalable foundation for the Toomio platform.
 
-## Environment Variables
-
-Before running the application, make sure to set up the following environment variables in a `.env` file:
-
-```
-MONGODB_URI= MongoDB connection string
-AWS_ACCESS_KEY_ID= AWS access key for authentication
-AWS_SECRET_ACCESS_KEY= AWS secret key for authentication
-AWS_REGION= AWS region where your resources are located
-AWS_COGNITO_USER_POOL_ID= Cognito User Pool ID for user management
-AWS_COGNITO_CLIENT_ID= Cognito Client ID for the application
-AWS_COGNITO_AUTHORITY= Base URL for Cognito authentication
-AWS_SQS_URL= Base URL for Amazon SQS queue
-```
-
-
-
-## Running the Application
-
-To run the Toomio backend, follow these steps:
-
-1. Install dependencies:
-   ```
-   npm install
-   ```
-
-2. Build the application:
-   ```
-   npm run build
-   ```
-
-3. Start the server:
-   ```
-   npm run start
-   ```
-
 ## API Endpoints
 
 The Toomio backend provides the following main endpoints:
@@ -80,4 +44,42 @@ The Toomio backend provides the following main endpoints:
 - `/notifications`: Manages user notifications
   - GET `/`: Get notifications for the authenticated user
 
-Each endpoint is designed to handle specific functionalities of the Toomio social media platform, providing a comprehensive API for the frontend application.
+Each endpoint is designed to handle specific functionalities of the Toomio social media platform, providing the APIs for the frontend application.
+
+## Environment Variables
+
+Before running the application, make sure to set up the following environment variables in a `.env` file:
+
+```
+MONGODB_URI= MongoDB connection string
+AWS_ACCESS_KEY_ID= AWS access key for authentication
+AWS_SECRET_ACCESS_KEY= AWS secret key for authentication
+AWS_REGION= AWS region where your resources are located
+AWS_COGNITO_USER_POOL_ID= Cognito User Pool ID for user management
+AWS_COGNITO_CLIENT_ID= Cognito Client ID for the application
+AWS_COGNITO_AUTHORITY= Base URL for Cognito authentication
+AWS_SQS_URL= Base URL for Amazon SQS queue
+```
+
+## Running the Application
+
+To run the Toomio backend, follow these steps:
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+
+2. Build the application:
+   ```
+   npm run build
+   ```
+
+3. Start the server:
+   ```
+   npm run start
+   ```
+
+## Deployment
+
+The Toomio backend is deployed and accessible at https://api.toomio.com
