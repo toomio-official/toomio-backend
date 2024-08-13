@@ -67,7 +67,11 @@ export class AwsCognitoService {
     userCreateDto.birthDate = birthDate;
     await this.userRepository.createUser(userCreateDto);
 
-    await this.awsSqsService.createQueueForUser(email);
+    try {
+      await this.awsSqsService.createQueueForUser(email);
+    } catch (error) {
+      console.error('Error creating queue for user:', error);
+    }
 
     return new Promise((resolve, reject) => {
       this.userPool.signUp(
