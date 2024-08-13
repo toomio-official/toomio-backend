@@ -18,7 +18,7 @@ export class AwsSqsService {
   }
 
   async createQueueForUser(email: string) {
-    let sqsQueueName: string = email.replace('@', '_').replace('.', '_');
+    let sqsQueueName: string = email.replace(/@/g, '_').replace(/\./g, '_');
 
     const command = new CreateQueueCommand({
       QueueName: sqsQueueName,
